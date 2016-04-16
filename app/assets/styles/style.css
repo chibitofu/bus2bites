@@ -3,6 +3,19 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+a {
+  color: rgb(255, 255, 255);
+}
+
+a:hover {
+  color: rgb(241, 225, 12);
+  text-decoration: none;
+}
+
+a:visited {
+  color: rgb(255, 255, 255);
+}
+
 /* Top Bar */
 .top-bar {
   background-color: rgb(19, 152, 60);
@@ -23,8 +36,13 @@ body {
   margin-top: 25px;
 }
 
+.bus-route {
+  border-radius: 0;
+}
+
 #sub-butt {
-  width: 25%;
+  height: 35px;
+  width: 100%;
   border: 0 solid rgb(79, 79, 79);
   color: rgb(66, 66, 66);
   background-color: rgb(241, 225, 12);
@@ -40,6 +58,7 @@ body {
 }
 
 .bottom-bar div {
+  padding-top: 10px;
   text-align: center;
 }
 
@@ -47,17 +66,4 @@ body {
   display: inline-block;
   list-style: none;
   margin: 0 10px;
-}
-
-.menu-bar a {
-  color: rgb(255, 255, 255);
-}
-
-.menu-bar a:visited {
-  color: rgb(255, 255, 255);
-}
-
-.menu-bar a:hover {
-  color: rgb(241, 225, 12);
-  text-decoration: none;
 }
