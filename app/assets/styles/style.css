@@ -23,6 +23,12 @@ body {
   margin-top: 25px;
 }
 
+#sub-butt {
+  width: 25%;
+  border: 0 solid rgb(79, 79, 79);
+  color: rgb(66, 66, 66);
+  background-color: rgb(241, 225, 12);
+}
 
 /* Bottom Menu Bar */
 .bottom-bar {
@@ -33,11 +39,25 @@ body {
   width: 100%;
 }
 
+.bottom-bar div {
+  text-align: center;
+}
+
 .menu-bar li {
   display: inline-block;
   list-style: none;
+  margin: 0 10px;
+}
+
+.menu-bar a {
+  color: rgb(255, 255, 255);
+}
+
+.menu-bar a:visited {
+  color: rgb(255, 255, 255);
 }
 
 .menu-bar a:hover {
+  color: rgb(241, 225, 12);
   text-decoration: none;
 }
