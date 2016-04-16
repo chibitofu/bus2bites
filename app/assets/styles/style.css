@@ -1,6 +1,21 @@
+/* Global Styles */
+body {
+  font-family: 'Lato', sans-serif;
+}
+
 /* Top Bar */
 .top-bar {
   background-color: rgb(19, 152, 60);
+}
+
+.top-bar h1 {
+  color: rgb(255, 255, 255);
+  font-family: 'Comfortaa', cursive;
+  font-weight: 700;
+}
+
+.top-bar p {
+  color: rgb(255, 255, 255);
 }
 
 /* Content */
