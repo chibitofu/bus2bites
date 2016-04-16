@@ -1,0 +1,28 @@
+/* Top Bar */
+.top-bar {
+  background-color: rgb(19, 152, 60);
+}
+
+/* Content */
+.content {
+  margin-top: 25px;
+}
+
+
+/* Bottom Menu Bar */
+.bottom-bar {
+  background-color: rgb(19, 152, 60);
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  width: 100%;
+}
+
+.menu-bar li {
+  display: inline-block;
+  list-style: none;
+}
+
+.menu-bar a:hover {
+  text-decoration: none;
+}
