@@ -4,6 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Bus2Bits</title>
+
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
+
     <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Comfortaa:400,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
@@ -29,15 +33,15 @@
         <div class="col-xs-8 col-md-6 col-xs-offset-2 col-md-offset-3">
           <form class="form-inline text-center">
             <div class="form-group">
-              <input class="form-control bus-route" type="number" placeholder="Enter Bus Route">
+              <input class="form-control bus-route" type="number" placeholder="Enter Bus Route" min="1" step="1">
             </div>
             <input id="sub-butt" type="submit" value="Search">
           </form>
         </div>
       </section>
       <section class="row bottom-bar">
-        <div class="col-xs-12 col-md-12">
-          <ul class="menu-bar text-center">
+        <div class="col-xs-10 col-md-10 col-xs-offset-1">
+          <ul class="menu-bar">
             <li><a href="">bookmarks</a></li>
             <li><a href="">map</a></li>
             <li><a href="">other</a></li>
