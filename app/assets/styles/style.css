@@ -1,0 +1,43 @@
+/* Global Styles */
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+/* Top Bar */
+.top-bar {
+  background-color: rgb(19, 152, 60);
+}
+
+.top-bar h1 {
+  color: rgb(255, 255, 255);
+  font-family: 'Comfortaa', cursive;
+  font-weight: 700;
+}
+
+.top-bar p {
+  color: rgb(255, 255, 255);
+}
+
+/* Content */
+.content {
+  margin-top: 25px;
+}
+
+
+/* Bottom Menu Bar */
+.bottom-bar {
+  background-color: rgb(19, 152, 60);
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  width: 100%;
+}
+
+.menu-bar li {
+  display: inline-block;
+  list-style: none;
+}
+
+.menu-bar a:hover {
+  text-decoration: none;
+}
