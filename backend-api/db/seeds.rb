@@ -92,14 +92,10 @@ route_nums.each do |route_num|
       if stop_time == stop_id
         stop_name = stop_line_info[2]
         stop_lat  = stop_line_info[4]
-        stop_lon  = stop_line_info[5]
+        stop_lng  = stop_line_info[5]
 
-        if Stop.where(id: stop_id.to_i).length == 0
-          stop = Stop.create(id: stop_id.to_i, name: stop_name, lat: stop_lat, lon: stop_lon)
-          route.stops << stop
-        else
-          stop = Stop.where(id: stop_id.to_i)[0]
-          route.stops << stop
+        if Stop.find_by(id: stop_id.to_i, route_id: route.id) == nil
+            Stop.create(id: stop_id.to_i, name: stop_name, lat: stop_lat, lng: stop_lng, route_id: route.id)
         end
       end
     end
