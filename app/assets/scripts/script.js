@@ -1,4 +1,5 @@
-var item;
+var restaurantsArr = [];
+var stopsArr = [];
 var busLoc = {};
 var biteLoc = {};
 
@@ -12,10 +13,18 @@ $('#sub-butt').on('click', function(e) {
     method: 'GET',
     data: busRoute,
     success: function(data, status) {
-      places = data;
+      for(var i = 0; i < data.data.length; i++) {
+        if (i%2 === 0 || i === 0) {
+          restaurantsArr.push(data.data[i])
+        } else {
+          stopsArr.push(data.data[i]);
+        }
+      }
+
       $('#route-form').hide()
-      console.log(places);
-      routeList(places);
+      console.log(restaurantsArr);
+      console.log(stopsArr);
+      routeList(restaurantsArr, stopsArr);
     },
     error: function(xhrt, status, error) {
       console.log(status);
@@ -25,10 +34,13 @@ $('#sub-butt').on('click', function(e) {
 });
 
 //Creates a list of restaurants//
-function routeList(places) {
-  item = places.restaurants;
+function routeList(restaurants, stops) {
+  restaurantsArr = restaurants;
+  stopsArr = stops;
   var prices = '';
-  console.log(item);
+  var rating = '';
+  var hours = '';
+
   //Gets rid of margin on top-bar//
   $('.top-bar').removeClass('bot-mar');
 
@@ -37,11 +49,30 @@ function routeList(places) {
   })
   $('#result').html('');
   $('#result').show();
-  for(var i = 0; i < item.length; i++) {
+  for(var i = 0; i < restaurantsArr.length; i++) {
+    var idx = 'restaurant' + i.toString();
+    var places = restaurantsArr[i][idx];
+
     //Creates $$$ for price_level//
-    for (var j = 0; j < item[i].price_level; j++) {
-      prices += '$';
+    if (places.price_level != null) {
+      for (var j = 0; j < places.price_level; j++) {
+        prices += '$';
+      }
+    } else {
+      prices = 'NA';
     }
+
+
+    if (places.rating != null) {
+      rating = places.rating;
+    } else {
+      rating = 'NA';
+    }
+
+    // for (var k = 0; k < places.hours.length; k++) {
+    //   console.log(places.hours[i]);
+    // }
+
 
     //Generates html element for each restaurant//
     $('#results').append(
@@ -54,7 +85,7 @@ function routeList(places) {
       ')">' +
         '<div class="row restaurant-name">' +
           '<p>' +
-            item[i].name +
+            places.name +
             '<span>' +
               prices +
             '</span>' +
@@ -63,15 +94,19 @@ function routeList(places) {
         '<div class="row restaurant-bottom">' +
           '<div class="col-xs-4">' +
             '<img class="img-responsive restaurant-icon" src="' +
-              'http://lorempixel.com/200/200/cats' +
+              places.icon +
             '">' +
+            '<p class="text-center restaurant-rating">' +
+            'Rating ' +
+            rating +
+            '</p>' +
           '</div>' +
           '<div class="col-xs-8">' +
             '<p class="restaurant-address">' +
-              item[i].street_address +
+              places.address +
             '</p>' +
             '<p class="restaurant-hours">' +
-              item[i].hours +
+              places.hours +
             '</p>' +
           '</div>' +
         '</div>' +
