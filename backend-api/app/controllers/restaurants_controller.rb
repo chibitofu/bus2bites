@@ -20,6 +20,6 @@ class RestaurantsController < ApplicationController
     end
 
     
-    render json: {data: collect}
+    render json: {data: collect}, status: :ok
   end
 end
