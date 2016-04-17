@@ -13,6 +13,7 @@ $('#sub-butt').on('click', function(e) {
     data: busRoute,
     success: function(data, status) {
       places = data;
+      console.log(places);
       $('#route-form').hide()
       routeList(places);
     },
@@ -30,7 +31,7 @@ function routeList(places) {
   console.log(item);
   //Gets rid of margin on top-bar//
   $('.top-bar').removeClass('bot-mar');
-  
+
   $('body').css({
     'background-image' : 'none'
   })
@@ -85,12 +86,12 @@ function routeList(places) {
 function restaurantDetail(idx, prices) {
   busLoc = {
       lat: item[idx].bus_lat,
-      lng: item[idx].bus_lon
+      lng: item[idx].bus_lng
     };
 
   biteLoc = {
       lat: item[idx].bite_lat,
-      lng: item[idx].bite_lon
+      lng: item[idx].bite_lng
     };
 
 
