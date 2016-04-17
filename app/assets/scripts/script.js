@@ -82,6 +82,10 @@ function routeList(restaurants, stops) {
         "'" +
         prices +
         "'" +
+        ',' +
+        "'" +
+        rating +
+        "'" +
       ')">' +
         '<div class="row restaurant-name">' +
           '<p>' +
@@ -118,15 +122,18 @@ function routeList(restaurants, stops) {
 }
 
 //Returns one restaurant based on the idx of the item//
-function restaurantDetail(idx, prices) {
-  busLoc = {
-      lat: item[idx].bus_lat,
-      lng: item[idx].bus_lng
-    };
+function restaurantDetail(idx, prices, rating) {
+  var places = restaurantsArr[idx]['restaurant' + idx];
+  var stop = stopsArr[idx]['stop' + idx];
 
   biteLoc = {
-      lat: item[idx].bite_lat,
-      lng: item[idx].bite_lng
+      lat: places.lat,
+      lng: places.lng
+    };
+
+  busLoc = {
+      lat: stop.lat,
+      lng: stop.lng
     };
 
 
@@ -138,7 +145,7 @@ function restaurantDetail(idx, prices) {
     '<section class="restaurants">' +
       '<div class="row restaurant-name">' +
         '<p>' +
-          item[idx].name +
+          places.name +
           '<span>' +
             prices +
           '</span>' +
@@ -147,15 +154,19 @@ function restaurantDetail(idx, prices) {
       '<div class="row">' +
         '<div class="col-xs-4">' +
           '<img class="img-responsive restaurant-icon" src="' +
-            'http://lorempixel.com/200/200/cats' +
+            places.icon +
           '">' +
+          '<p class="text-center restaurant-rating">' +
+          'Rating ' +
+          rating +
+          '</p>' +
         '</div>' +
         '<div class="col-xs-8">' +
           '<p class="restaurant-address">' +
-            item[idx].street_address +
+            places.address +
           '</p>' +
           '<p class="restaurant-hours">' +
-            item[idx].hours +
+            places.hours +
           '</p>' +
         '</div>' +
       '</div>' +
@@ -176,7 +187,7 @@ function restaurantDetail(idx, prices) {
 function showMap() {
   L.mapbox.accessToken = 'pk.eyJ1IjoiY2hpYml0b2Z1IiwiYSI6ImNpaXNkYzAycDAzNHZ2NG01Z3MxcmNjZWEifQ.j0WgZ0YRd36GE4cpJ7DxSQ';
   var map = L.mapbox.map('map', 'mapbox.streets')
-    .setView([47.609895, -122.330259], 13);
+    .setView([biteLoc.lat, biteLoc.lng], 16);
   L.mapbox.featureLayer({
   // this feature is in the GeoJSON format: see geojson.org
   // for the full specification
@@ -186,8 +197,8 @@ function showMap() {
       // coordinates here are in longitude, latitude order because
       // x, y is the standard for GeoJSON and many formats
       coordinates: [
-        -122.330259,
-        47.609895
+        biteLoc.lng,
+        biteLoc.lat
       ]
   },
   properties: {
@@ -208,8 +219,8 @@ function showMap() {
       // coordinates here are in longitude, latitude order because
       // x, y is the standard for GeoJSON and many formats
       coordinates: [
-        -122.350259,
-        47.619895
+        busLoc.lng,
+        busLoc.lat
       ]
   },
   properties: {
