@@ -130,6 +130,16 @@ a:visited {
   border: 0 solid rgba(0, 0, 0, 0.75);
 }
 
+.bus-zoom {
+  background-color: rgb(19, 152, 60);
+  border: 0 solid rgba(0, 0, 0, 0.75);
+}
+
+.zoom-out {
+  background-color: rgb(241, 225, 12);
+  border: 0 solid rgba(0, 0, 0, 0.75);
+}
+
 .button-row {
   margin: 0 auto;
   margin-top: 25px;
