@@ -199,6 +199,12 @@ function restaurantDetail(idx, prices, rating, hours) {
         '<button type="button" class="show-results" onclick="showResults()">' +
           'Results' +
         '</button>' +
+        '<button type="button" class="bus-zoom">' +
+          'Bus Stop' +
+        '</button>' +
+        '<button type="button" class="zoom-out">' +
+          'Show All' +
+        '</button>' +
         '</div>' +
       '</div>' +
       '<p class="text-center bus-stop-name">' +
@@ -286,7 +292,13 @@ function showMap(idx) {
 
     Poi.addTo(map);
     map.fitBounds(Poi.getBounds());
+
+    $('.bus-zoom').on('click', function() {
+      map.setView([busLoc.lat, busLoc.lng], 15);
+    });
+
 }
+
 
 //Back button to show results page//
 function showResults() {
