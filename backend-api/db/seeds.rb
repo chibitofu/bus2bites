@@ -34,72 +34,75 @@ require 'set'
 
 file = "../../king_county_bus/"
 
-routes     = File.open("#{file}routes.txt", "r")
-trips      = File.open("#{file}trips.txt", "r")
-stop_times = File.open("#{file}stop_times.txt", "r")
-stops      = File.open("#{file}stops.txt", "r")
-
-route_num = "\"37\""
+route_nums = ["37", "40"]
 direction = "1"
-route = nil
-trip_ids = Set.new
-stop_times_stop_ids = Set.new
 
-routes.each_line do |route_line|
-  route_info = route_line.split(',')
+route_nums.each do |route_num|
+  routes     = File.open("#{file}routes.txt", "r")
+  trips      = File.open("#{file}trips.txt", "r")
+  stop_times = File.open("#{file}stop_times.txt", "r")
+  stops      = File.open("#{file}stops.txt", "r")
+  route = nil
+  trip_ids = Set.new
+  stop_times_stop_ids = Set.new
 
-  route_id         = route_info[0]
-  route_short_name = route_info[2]
-  route_desc = route_info[4]
+  routes.each_line do |route_line|
+    route_info = route_line.split(',')
 
-  if route_short_name == route_num
-    route = Route.create(
-       id: route_id.to_i,
-       short_name: route_short_name,
-       desc: route_desc 
-    )
-  end
-end
+    route_id         = route_info[0]
+    route_short_name = route_info[2][1..-2] # because the short name is formatted ex. "\"40\""
+    route_desc       = route_info[4]
 
-trips.each_line do |trip_line|
-  trip_info = trip_line.split(',')
-  trip_route_id     = trip_info[0]
-  trip_direction_id = trip_info[5]
-
-  if route.id.to_s == trip_route_id && trip_direction_id == direction
-    trip_id = trip_info[2]
-    trip_ids.add(trip_id)
-  end
-end
-
-stop_times.each_line do |stop_times_line|
-  stop_times_trip_id = stop_times_line[0..7]
-
-  trip_ids.each do |trip|
-    if trip == stop_times_trip_id
-      stop_times_info = stop_times_line.split(',')
-      stop_times_stop_id = stop_times_info[3]
-      stop_times_stop_ids.add(stop_times_stop_id)
+    if route_short_name == route_num
+      route = Route.create(
+         id: route_id.to_i,
+         short_name: route_short_name,
+         desc: route_desc
+      )
     end
   end
-end
 
-stops.each_line do |stops_line|
-  stop_line_info = stops_line.split(',')
-  stop_id = stop_line_info[0]
-  stop_times_stop_ids.each do |stop_time|
-    if stop_time == stop_id
-      stop_name = stop_line_info[2]
-      stop_lat  = stop_line_info[4]
-      stop_lon  = stop_line_info[5]
+  trips.each_line do |trip_line|
+    trip_info = trip_line.split(',')
+    trip_route_id     = trip_info[0]
+    trip_direction_id = trip_info[5]
 
-      stop = Stop.create(id: stop_id.to_i, name: stop_name, lat: stop_lat, lon: stop_lon)
-      route.stops << stop
+    if route.id.to_s == trip_route_id && trip_direction_id == direction
+      trip_id = trip_info[2]
+      trip_ids.add(trip_id)
     end
   end
-end
 
-routes.close
-trips.close
-stop_times.close
-stops.close
+  stop_times.each_line do |stop_times_line|
+    stop_times_trip_id = stop_times_line[0..7]
+
+    trip_ids.each do |trip|
+      if trip == stop_times_trip_id
+        stop_times_info = stop_times_line.split(',')
+        stop_times_stop_id = stop_times_info[3]
+        stop_times_stop_ids.add(stop_times_stop_id)
+      end
+    end
+  end
+
+  stops.each_line do |stops_line|
+    stop_line_info = stops_line.split(',')
+    stop_id = stop_line_info[0]
+    stop_times_stop_ids.each do |stop_time|
+      if stop_time == stop_id
+        stop_name = stop_line_info[2]
+        stop_lat  = stop_line_info[4]
+        stop_lng  = stop_line_info[5]
+
+        if Stop.find_by(id: stop_id.to_i, route_id: route.id) == nil
+            Stop.create(id: stop_id.to_i, name: stop_name, lat: stop_lat, lng: stop_lng, route_id: route.id)
+        end
+      end
+    end
+  end
+
+  routes.close
+  trips.close
+  stop_times.close
+  stops.close
+end

@@ -1,4 +1,4 @@
 class Route < ActiveRecord::Base
-    has_many :route_stops
-    has_many :stops, :through => :route_stops
+    has_many :stops
+    has_many :restaurants, :through => :stops
 end
