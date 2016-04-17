@@ -205,7 +205,7 @@ function restaurantDetail(idx, prices, rating, hours) {
         '</div>' +
       '</div>' +
       '<div class="row button-row">' +
-        '<div class="col-xs-10 col-xs-offset-1 col-md-12">' +
+        '<div class="col-xs-12 col-md-12 text-center">' +
         '<button type="button" class="show-results" onclick="showResults()">' +
           'Results' +
         '</button>' +
@@ -213,7 +213,7 @@ function restaurantDetail(idx, prices, rating, hours) {
           'Bus Stop' +
         '</button>' +
         '<button type="button" class="zoom-out">' +
-          'Show All' +
+          'Zoom Out' +
         '</button>' +
         '</div>' +
       '</div>' +
