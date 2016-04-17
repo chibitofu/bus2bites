@@ -34,6 +34,7 @@ function routeList(places) {
       prices += '$';
     }
 
+    //Generates html element for each restaurant//
     $('#results').append(
       '<section class="restaurants" onclick="restaurantDetail(' +
         i +
@@ -72,6 +73,7 @@ function routeList(places) {
 
 }
 
+//Returns one restaurant based on the idx of the item//
 function restaurantDetail(idx, prices) {
   $('#results').hide();
   $('#single-result').show();
@@ -112,6 +114,7 @@ function restaurantDetail(idx, prices) {
   );
 }
 
+//Back button to show results page//
 function showResults() {
   $('#single-result').hide();
   $('#results').show();
