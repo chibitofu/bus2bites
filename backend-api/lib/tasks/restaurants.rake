@@ -3,7 +3,7 @@ require 'dotenv'
 
 Dotenv.load
 
-namespace :restaurant do
+namespace :restaurants do
   desc "Seed restaurants with google API data"
   task seed: :environment do
 
@@ -15,9 +15,13 @@ namespace :restaurant do
     lon = stop.lon
    
     # request based on location
-    res = HTTParty.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{lat},#{lon}&radius=250&type=restaurant&key=#{google_key}")
+    res = HTTParty.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{lat},#{lon}&radius=100&type=restaurant&key=#{google_key}")
 
-    puts res.length
+    restaurants = res["results"]
+
+    restaurants.each do |restaurant|
+        puts restaurant["name"]
+    end
 
     # #<Stop id: 531, name: "\"3rd Ave & James St\"", lat: "47.6026421", lon: "-122.331184", created_at: "2016-04-17 01:51:00", updated_at: "2016-04-17 01:51:00">
 
