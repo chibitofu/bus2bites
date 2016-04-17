@@ -50,7 +50,7 @@ function routeList(placesData) {
       if (JSON.parse(places.hours)) {
         hours = JSON.parse(places.hours);
       } else {
-        hours = [NA]; 
+        hours = [NA];
       }
 
       hours +=
@@ -142,7 +142,6 @@ function restaurantDetail(idx, prices, rating, hours) {
       lat: stop.lat,
       lng: stop.lng
     };
-
 
   $('#results').hide();
   $('#single-result').show();
