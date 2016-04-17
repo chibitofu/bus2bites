@@ -1,6 +1,7 @@
 /* Global Styles */
 body {
   font-family: 'Lato', sans-serif;
+  color: rgba(0, 0, 0, 0.70);
 }
 
 a {
@@ -21,7 +22,10 @@ a:visited {
   background-color: rgb(19, 152, 60);
 }
 
-.top-bar h1 {
+.top-bar img {
+  margin: 0 auto;
+  margin-top: 10px;
+  height: 50px;
   color: rgb(255, 255, 255);
   font-family: 'Comfortaa', cursive;
   font-weight: 700;
@@ -30,6 +34,7 @@ a:visited {
 .top-bar p {
   color: rgb(255, 255, 255);
   font-size: 24px;
+  font-family: 'Comfortaa', cursive;
 }
 
 /* Content */
@@ -44,8 +49,11 @@ a:visited {
   width: 100%;
   font-weight: 700;
   border: 0 solid rgba(0, 0, 0, 0.75);
-  color: rgba(0, 0, 0, 0.75);
   background-color: rgb(241, 225, 12);
+}
+
+.info {
+  color: rgba(0, 0, 0, 0.4);
 }
 
 /* Restaurant Listings */
@@ -62,7 +70,6 @@ a:visited {
 .restaurant-name p {
   font-size: 20px;
   font-weight: 700;
-  color: rgba(0, 0, 0, 0.75);
 }
 
 .restaurant-name span {
@@ -77,6 +84,22 @@ a:visited {
 .restaurant-bottom {
   padding-bottom: 25px;
   border-bottom: 2px solid rgba(0, 0, 0, 0.75);
+}
+
+/* Single Result */
+.show-results {
+  background-color: rgb(241, 225, 12);
+  border: 0 solid rgba(0, 0, 0, 0.75);
+}
+
+.button-row {
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+.button-row button {
+  font-size: 16px;
+  padding: 5px 15px;
 }
 
 /* Bottom Menu Bar */

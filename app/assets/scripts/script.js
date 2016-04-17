@@ -26,7 +26,8 @@ function routeList(places) {
   item = places.restaurants;
   var prices = '';
   console.log(item);
-
+  $('#result').html('');
+  $('#result').show();
   for(var i = 0; i < item.length; i++) {
     //Creates $$$ for price_level//
     for (var j = 0; j < item[i].price_level; j++) {
@@ -36,6 +37,10 @@ function routeList(places) {
     $('#results').append(
       '<section class="restaurants" onclick="restaurantDetail(' +
         i +
+        ',' +
+        "'" +
+        prices +
+        "'" +
       ')">' +
         '<div class="row restaurant-name">' +
           '<p>' +
@@ -67,6 +72,48 @@ function routeList(places) {
 
 }
 
-function restaurantDetail(elem) {
-  console.log(elem);
+function restaurantDetail(idx, prices) {
+  $('#results').hide();
+  $('#single-result').show();
+  $('#single-result').html('');
+  $('#single-result').append(
+    '<section class="restaurants">' +
+      '<div class="row restaurant-name">' +
+        '<p>' +
+          item[idx].name +
+          '<span>' +
+            prices +
+          '</span>' +
+        '</p>' +
+      '</div>' +
+      '<div class="row">' +
+        '<div class="col-xs-4">' +
+          '<img class="img-responsive restaurant-icon" src="' +
+            'http://lorempixel.com/200/200/cats' +
+          '">' +
+        '</div>' +
+        '<div class="col-xs-8">' +
+          '<p class="restaurant-address">' +
+            item[idx].street_address +
+          '</p>' +
+          '<p class="restaurant-hours">' +
+            item[idx].hours +
+          '</p>' +
+        '</div>' +
+      '</div>' +
+      '<div class="row button-row">' +
+        '<div class="col-xs-4 col-xs-offset-4">' +
+        '<button type="button" class="show-results" onclick="showResults()">' +
+          'Results' +
+        '</button>' +
+        '</div>' +
+      '</div>' +
+    '</section>'
+  );
+}
+
+function showResults() {
+  $('#single-result').hide();
+  $('#results').show();
+  console.log('hello');
 }
