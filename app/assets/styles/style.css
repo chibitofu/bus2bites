@@ -95,6 +95,18 @@ a:visited {
   float: right;
 }
 
+.restaurant-icon {
+  padding: 5px;
+  border: 2px solid rgb(19, 152, 60);
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.restaurant-rating {
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
 .restaurant-address {
   font-size: 18px;
 }

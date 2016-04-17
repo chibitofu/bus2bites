@@ -1,21 +1,27 @@
-var item;
+var placesData
 var busLoc = {};
 var biteLoc = {};
 
 $('#sub-butt').on('click', function(e) {
   e.preventDefault();
   var busRoute = parseInt($('.bus-route').val());
-  var places;
 
   $.ajax({
     url: 'http://localhost:3000/routes/' + busRoute,
     method: 'GET',
     data: busRoute,
     success: function(data, status) {
-      places = data;
+      // for(var i = 0; i < data.data.length; i++) {
+      //   if (i%2 === 0 || i === 0) {
+      //     restaurantsArr.push(data.data[i])
+      //   } else {
+      //     stopsArr.push(data.data[i]);
+      //   }
+      // }
+
       $('#route-form').hide()
-      console.log(places);
-      routeList(places);
+      placesData = data.data;
+      routeList(placesData);
     },
     error: function(xhrt, status, error) {
       console.log(status);
@@ -25,10 +31,11 @@ $('#sub-butt').on('click', function(e) {
 });
 
 //Creates a list of restaurants//
-function routeList(places) {
-  item = places.restaurants;
+function routeList(placesData) {
   var prices = '';
-  console.log(item);
+  var rating = '';
+  var hours = '';
+
   //Gets rid of margin on top-bar//
   $('.top-bar').removeClass('bot-mar');
 
@@ -37,11 +44,30 @@ function routeList(places) {
   })
   $('#result').html('');
   $('#result').show();
-  for(var i = 0; i < item.length; i++) {
+  for(var i = 0; i < placesData.length; i++) {
+    var idx = 'restaurant';
+    var places = placesData[i][idx];
+
     //Creates $$$ for price_level//
-    for (var j = 0; j < item[i].price_level; j++) {
-      prices += '$';
+    if (places.price_level != null) {
+      for (var j = 0; j < places.price_level; j++) {
+        prices += '$';
+      }
+    } else {
+      prices = 'NA';
     }
+
+
+    if (places.rating != null) {
+      rating = places.rating;
+    } else {
+      rating = 'NA';
+    }
+
+    // for (var k = 0; k < places.hours.length; k++) {
+    //   console.log(places.hours[i]);
+    // }
+
 
     //Generates html element for each restaurant//
     $('#results').append(
@@ -51,10 +77,14 @@ function routeList(places) {
         "'" +
         prices +
         "'" +
+        ',' +
+        "'" +
+        rating +
+        "'" +
       ')">' +
         '<div class="row restaurant-name">' +
           '<p>' +
-            item[i].name +
+            places.name +
             '<span>' +
               prices +
             '</span>' +
@@ -63,15 +93,19 @@ function routeList(places) {
         '<div class="row restaurant-bottom">' +
           '<div class="col-xs-4">' +
             '<img class="img-responsive restaurant-icon" src="' +
-              'http://lorempixel.com/200/200/cats' +
+              places.icon +
             '">' +
+            '<p class="text-center restaurant-rating">' +
+            'Rating ' +
+            rating +
+            '</p>' +
           '</div>' +
           '<div class="col-xs-8">' +
             '<p class="restaurant-address">' +
-              item[i].street_address +
+              places.address +
             '</p>' +
             '<p class="restaurant-hours">' +
-              item[i].hours +
+              places.hours +
             '</p>' +
           '</div>' +
         '</div>' +
@@ -83,15 +117,18 @@ function routeList(places) {
 }
 
 //Returns one restaurant based on the idx of the item//
-function restaurantDetail(idx, prices) {
-  busLoc = {
-      lat: item[idx].bus_lat,
-      lng: item[idx].bus_lng
-    };
+function restaurantDetail(idx, prices, rating) {
+  var places = placesData[idx]['restaurant'];
+  var stop = placesData[idx]['stop'];
 
   biteLoc = {
-      lat: item[idx].bite_lat,
-      lng: item[idx].bite_lng
+      lat: places.lat,
+      lng: places.lng
+    };
+
+  busLoc = {
+      lat: stop.lat,
+      lng: stop.lng
     };
 
 
@@ -103,7 +140,7 @@ function restaurantDetail(idx, prices) {
     '<section class="restaurants">' +
       '<div class="row restaurant-name">' +
         '<p>' +
-          item[idx].name +
+          places.name +
           '<span>' +
             prices +
           '</span>' +
@@ -112,15 +149,19 @@ function restaurantDetail(idx, prices) {
       '<div class="row">' +
         '<div class="col-xs-4">' +
           '<img class="img-responsive restaurant-icon" src="' +
-            'http://lorempixel.com/200/200/cats' +
+            places.icon +
           '">' +
+          '<p class="text-center restaurant-rating">' +
+          'Rating ' +
+          rating +
+          '</p>' +
         '</div>' +
         '<div class="col-xs-8">' +
           '<p class="restaurant-address">' +
-            item[idx].street_address +
+            places.address +
           '</p>' +
           '<p class="restaurant-hours">' +
-            item[idx].hours +
+            places.hours +
           '</p>' +
         '</div>' +
       '</div>' +
@@ -141,7 +182,7 @@ function restaurantDetail(idx, prices) {
 function showMap() {
   L.mapbox.accessToken = 'pk.eyJ1IjoiY2hpYml0b2Z1IiwiYSI6ImNpaXNkYzAycDAzNHZ2NG01Z3MxcmNjZWEifQ.j0WgZ0YRd36GE4cpJ7DxSQ';
   var map = L.mapbox.map('map', 'mapbox.streets')
-    .setView([47.609895, -122.330259], 13);
+    .setView([biteLoc.lat, biteLoc.lng], 16);
   L.mapbox.featureLayer({
   // this feature is in the GeoJSON format: see geojson.org
   // for the full specification
@@ -151,8 +192,8 @@ function showMap() {
       // coordinates here are in longitude, latitude order because
       // x, y is the standard for GeoJSON and many formats
       coordinates: [
-        -122.330259,
-        47.609895
+        biteLoc.lng,
+        biteLoc.lat
       ]
   },
   properties: {
@@ -173,8 +214,8 @@ function showMap() {
       // coordinates here are in longitude, latitude order because
       // x, y is the standard for GeoJSON and many formats
       coordinates: [
-        -122.350259,
-        47.619895
+        busLoc.lng,
+        busLoc.lat
       ]
   },
   properties: {
