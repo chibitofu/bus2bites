@@ -3,6 +3,7 @@ var busLoc = {};
 var biteLoc = {};
 var bitePoint;
 var busPoint;
+var map;
 
 $('#sub-butt').on('click', function(e) {
   e.preventDefault();
@@ -190,16 +191,20 @@ function restaurantDetail(idx, prices, rating, hours) {
     '</section>'
   );
   showMap(idx);
+
 }
 
 //Shows map on single-results page//
 function showMap(idx) {
+  if (map) {
+    map.remove();
+  }
   $('.map-remover').removeAttr('id');
   $('.map-remover').attr('id', 'map');
 
   L.mapbox.accessToken = 'pk.eyJ1IjoiY2hpYml0b2Z1IiwiYSI6ImNpaXNkYzAycDAzNHZ2NG01Z3MxcmNjZWEifQ.j0WgZ0YRd36GE4cpJ7DxSQ';
 
-  window['map' + idx] = L.mapbox.map('map', 'mapbox.streets', {
+  map = L.mapbox.map('map', 'mapbox.streets', {
     scrollWheelZoom: false,
     scrollZoom: false
   }).setView([biteLoc.lat, biteLoc.lng], 16);
@@ -240,8 +245,8 @@ function showMap(idx) {
       }
     });
 
-    bitePoint.addTo(window['map' + idx]);
-    busPoint.addTo(window['map' + idx]);
+    bitePoint.addTo(map);
+    busPoint.addTo(map);
 }
 
 //Back button to show results page//
