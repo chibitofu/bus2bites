@@ -202,7 +202,7 @@ function restaurantDetail(idx, prices, rating, hours) {
         '</div>' +
       '</div>' +
       '<p class="text-center bus-stop-name">' +
-        'Buss Stop ' +
+        'Bus Stop ' +
         stop.name +
       '</p>' +
     '</section>'
