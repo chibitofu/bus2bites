@@ -15,10 +15,12 @@ $(document).ready(function() {
   getLocation();
 });
 
+//Set to a default value in case no user location can be gotten//
+var userLoc = {lat: 47.6062, lng: -122.3321};
+
 var placesData
 var busLoc = {};
 var biteLoc = {};
-var userLoc = {};
 var bitePoint;
 var busPoint;
 var map;
@@ -58,6 +60,8 @@ function routeList(placesData) {
   })
   $('#result').html('');
   $('#result').show();
+
+  //Loops through all the data and creates elements for each//
   for(var i = 0; i < placesData.length; i++) {
     var idx = 'restaurant';
     var places = placesData[i][idx];
@@ -97,6 +101,7 @@ function routeList(placesData) {
 
     //Generates html element for each restaurant//
     $('#results').append(
+      //Creates a onclick function passing through i, prices, rating, and hours//
       '<section class="restaurants" onclick="restaurantDetail(' +
         i +
         ',' +
@@ -141,7 +146,10 @@ function routeList(placesData) {
         '</div>' +
       '</section>'
     );
+
+    //Resets price//
     prices = '';
+
   } //end of i for loop//
 
 }
@@ -165,6 +173,8 @@ function restaurantDetail(idx, prices, rating, hours) {
   $('#single-result').show();
   $('#single-result').removeClass('hidden');
   $('.result').html('');
+
+  //Generates HTML elements for a single restaurant//
   $('.result').append(
     '<section class="restaurants">' +
       '<div class="row restaurant-name">' +
@@ -195,7 +205,7 @@ function restaurantDetail(idx, prices, rating, hours) {
         '</div>' +
       '</div>' +
       '<div class="row button-row">' +
-        '<div class="col-xs-10 col-xs-offset-1 col-md-12">' +
+        '<div class="col-xs-12 col-md-12 text-center">' +
         '<button type="button" class="show-results" onclick="showResults()">' +
           'Results' +
         '</button>' +
@@ -203,7 +213,7 @@ function restaurantDetail(idx, prices, rating, hours) {
           'Bus Stop' +
         '</button>' +
         '<button type="button" class="zoom-out">' +
-          'Show All' +
+          'Zoom Out' +
         '</button>' +
         '</div>' +
       '</div>' +
@@ -213,12 +223,14 @@ function restaurantDetail(idx, prices, rating, hours) {
       '</p>' +
     '</section>'
   );
+
   showMap(idx);
 
 }
 
 //Shows map on single-results page//
 function showMap(idx) {
+
   //Gets rid of current map if one exists//
   if (map) {
     map.remove();
@@ -288,17 +300,26 @@ function showMap(idx) {
     }
   ];
 
-    var Poi = L.mapbox.featureLayer().setGeoJSON(geojson);
+  //Creates a feature layer with all the points from the geojson//
+  var Poi = L.mapbox.featureLayer().setGeoJSON(geojson);
 
-    Poi.addTo(map);
+  //Adds feature layer to map//
+  Poi.addTo(map);
+
+  //Sets the map zoom and center to fit all points on the feature layer//
+  map.fitBounds(Poi.getBounds());
+
+  //Zooms in on bus stop when button is slicked//
+  $('.bus-zoom').on('click', function() {
+    map.setView([busLoc.lat, busLoc.lng], 15);
+  });
+
+  //Zooms out to show all points when button is clicked//
+  $('.zoom-out').on('click', function() {
     map.fitBounds(Poi.getBounds());
-
-    $('.bus-zoom').on('click', function() {
-      map.setView([busLoc.lat, busLoc.lng], 15);
-    });
+  });
 
 }
-
 
 //Back button to show results page//
 function showResults() {
