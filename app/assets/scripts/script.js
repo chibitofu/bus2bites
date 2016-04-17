@@ -1,30 +1,27 @@
-var restaurantsArr = [];
-var stopsArr = [];
+var placesData
 var busLoc = {};
 var biteLoc = {};
 
 $('#sub-butt').on('click', function(e) {
   e.preventDefault();
   var busRoute = parseInt($('.bus-route').val());
-  var places;
 
   $.ajax({
     url: 'http://localhost:3000/routes/' + busRoute,
     method: 'GET',
     data: busRoute,
     success: function(data, status) {
-      for(var i = 0; i < data.data.length; i++) {
-        if (i%2 === 0 || i === 0) {
-          restaurantsArr.push(data.data[i])
-        } else {
-          stopsArr.push(data.data[i]);
-        }
-      }
+      // for(var i = 0; i < data.data.length; i++) {
+      //   if (i%2 === 0 || i === 0) {
+      //     restaurantsArr.push(data.data[i])
+      //   } else {
+      //     stopsArr.push(data.data[i]);
+      //   }
+      // }
 
       $('#route-form').hide()
-      console.log(restaurantsArr);
-      console.log(stopsArr);
-      routeList(restaurantsArr, stopsArr);
+      placesData = data.data;
+      routeList(placesData);
     },
     error: function(xhrt, status, error) {
       console.log(status);
@@ -34,9 +31,7 @@ $('#sub-butt').on('click', function(e) {
 });
 
 //Creates a list of restaurants//
-function routeList(restaurants, stops) {
-  restaurantsArr = restaurants;
-  stopsArr = stops;
+function routeList(placesData) {
   var prices = '';
   var rating = '';
   var hours = '';
@@ -49,9 +44,9 @@ function routeList(restaurants, stops) {
   })
   $('#result').html('');
   $('#result').show();
-  for(var i = 0; i < restaurantsArr.length; i++) {
-    var idx = 'restaurant' + i.toString();
-    var places = restaurantsArr[i][idx];
+  for(var i = 0; i < placesData.length; i++) {
+    var idx = 'restaurant';
+    var places = placesData[i][idx];
 
     //Creates $$$ for price_level//
     if (places.price_level != null) {
@@ -123,8 +118,8 @@ function routeList(restaurants, stops) {
 
 //Returns one restaurant based on the idx of the item//
 function restaurantDetail(idx, prices, rating) {
-  var places = restaurantsArr[idx]['restaurant' + idx];
-  var stop = stopsArr[idx]['stop' + idx];
+  var places = placesData[idx]['restaurant'];
+  var stop = placesData[idx]['stop'];
 
   biteLoc = {
       lat: places.lat,
