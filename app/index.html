@@ -12,8 +12,8 @@
     <link href='https://fonts.googleapis.com/css?family=Comfortaa:400,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lato: 400, 700' rel='stylesheet' type='text/css'>
 
-    <!-- ESRI CDN -->
-    <link rel="stylesheet" href="https://js.arcgis.com/3.16/esri/css/esri.css">
+    <!-- Mapbox CDN -->
+    <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
@@ -23,14 +23,14 @@
   </head>
   <body>
     <div class="container-fluid">
-      <section class="row top-bar">
+      <section class="row top-bar bot-mar">
         <div class="col-xs-12 text-center">
           <a href="/"><img class="img-responsive" src="/assets/images/B2B_white.png"></a>
           <p>Bus 2 Bites</p>
         </div>
       </section>
       <section class="row content">
-        <div class="col-xs-12 col-md-10 col-xs-offset-0 col-md-offset-3">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-xs-offset-0 col-sm-offset-4 route-col">
           <div id="route-form">
             <form class="form-inline text-center">
               <div class="form-group">
@@ -54,28 +54,35 @@
           </section>
 
           <!-- Shows single result -->
-          <section id="single-result">
+          <section id="single-result" class="hidden">
+            <div class="result">
+
+            </div>
+            <section id="map-box">
+              <div id="map">
+              </div>
+            </section>
           </section>
 
         </div> <!-- col end -->
       </section> <!--row end -->
       <section class="row bottom-bar">
-        <div class="col-xs-10 col-md-10 col-xs-offset-1">
+        <div class="col-xs-12 col-md-12 col-xs-offset-0">
           <ul class="menu-bar">
             <li><a href="">bookmarks</a></li>
             <li><a href="">map</a></li>
-            <li><a href="">other</a></li>
+            <li><a href="/">search</a></li>
           </ul>
+          <span class="footer">Site for AngelHack created by Loraine Kanervisto Brandi Wilson & Erin Moon &copy;2016</span>
         </div>
       </section>
     </div>
 
-
     <!-- jQuery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-    <!-- ESRI CDN -->
-    <script src="https://js.arcgis.com/3.16/"></script>
+    <!-- Mapbox CDN -->
+    <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
 
     <!-- Script -->
     <script src="assets/scripts/script.js"></script>
