@@ -32,7 +32,7 @@ Cursory Google searches do not reveal any other apps like this
 
 # Run the App
 
-- Seed and run the backend-api app on port 3000 (see /backend-api/README.md for details)
+- Seed and run the backend-api app on port 3000 (see [/backend-api/README.md](https://github.com/chibitofu/bus2bites/blob/master/backend-api/README.md) for details)
 - Run `npm install http-server -g` and `http-server -p 8080` from /app to run the frontend app
 - Open your browser and visit the frontend app to see Bus2Bite in action!
 
