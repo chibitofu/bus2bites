@@ -10,8 +10,10 @@ function getDropdownOptions() {
     url: 'http://localhost:3000/routes/',
     method: 'GET',
     success: function(data, status) {
+      data.sort(function(a, b) {return a.short_name - b.short_name;})
+
       for (var i = 0; i < data.length; i++) {
-        $('.bus-route-select').append(
+        $('.bus-route').append(
           '<option value="' +
           data[i].short_name +
           '">' +
@@ -19,10 +21,10 @@ function getDropdownOptions() {
           '</option>'
         )
       }
-      console.log("yay", data);
+      console.log(data);
     },
     error: function(xhrt, status, error) {
-      console.log('boooo', status);
+      console.log(status);
     }
   });
 };
@@ -31,7 +33,6 @@ getDropdownOptions();
 $('#sub-butt').on('click', function(e) {
   e.preventDefault();
   var busRoute = parseInt($('.bus-route').val());
-
   $.ajax({
     url: 'http://localhost:3000/routes/' + busRoute,
     method: 'GET',

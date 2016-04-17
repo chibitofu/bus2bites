@@ -66,6 +66,10 @@ a:visited {
   margin-top: 25px;
 }
 
+.big-font {
+  font-size: 30px;
+}
+
 #sub-butt {
   height: 35px;
   width: 100%;
