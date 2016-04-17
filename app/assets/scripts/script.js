@@ -1,6 +1,8 @@
 var placesData
 var busLoc = {};
 var biteLoc = {};
+var bitePoint;
+var busPoint;
 
 $('#sub-butt').on('click', function(e) {
   e.preventDefault();
@@ -11,14 +13,6 @@ $('#sub-butt').on('click', function(e) {
     method: 'GET',
     data: busRoute,
     success: function(data, status) {
-      // for(var i = 0; i < data.data.length; i++) {
-      //   if (i%2 === 0 || i === 0) {
-      //     restaurantsArr.push(data.data[i])
-      //   } else {
-      //     stopsArr.push(data.data[i]);
-      //   }
-      // }
-
       $('#route-form').hide()
       placesData = data.data;
       routeList(placesData);
@@ -48,9 +42,17 @@ function routeList(placesData) {
   for(var i = 0; i < placesData.length; i++) {
     var idx = 'restaurant';
     var places = placesData[i][idx];
-    var hoursArr = JSON.parse(places.hours);
+    var hoursArr = [];
     var hours = '';
+
+    //Generates HTML for hours//
     for (var k = 0; k < hoursArr.length; k++) {
+      if (JSON.parse(places.hours)) {
+        hours = JSON.parse(places.hours);
+      } else {
+        hours = [NA]; 
+      }
+
       hours +=
       '<ul>' +
         '<li>' +
@@ -58,7 +60,6 @@ function routeList(placesData) {
         '</li>' +
       '</ul>';
     }
-    console.log(hours);
 
     //Creates $$$ for price_level//
     if (places.price_level != null) {
@@ -76,11 +77,6 @@ function routeList(placesData) {
       rating = 'NA';
     }
 
-    // for (var k = 0; k < places.hours.length; k++) {
-    //   console.log(places.hours[i]);
-    // }
-
-
     //Generates html element for each restaurant//
     $('#results').append(
       '<section class="restaurants" onclick="restaurantDetail(' +
@@ -92,6 +88,10 @@ function routeList(placesData) {
         ',' +
         "'" +
         rating +
+        "'" +
+        ',' +
+        "'" +
+        hours +
         "'" +
       ')">' +
         '<div class="row restaurant-name">' +
@@ -129,7 +129,7 @@ function routeList(placesData) {
 }
 
 //Returns one restaurant based on the idx of the item//
-function restaurantDetail(idx, prices, rating) {
+function restaurantDetail(idx, prices, rating, hours) {
   var places = placesData[idx]['restaurant'];
   var stop = placesData[idx]['stop'];
 
@@ -173,7 +173,7 @@ function restaurantDetail(idx, prices, rating) {
             places.address +
           '</p>' +
           '<p class="restaurant-hours">' +
-            places.hours +
+            hours +
           '</p>' +
         '</div>' +
       '</div>' +
@@ -184,63 +184,71 @@ function restaurantDetail(idx, prices, rating) {
         '</button>' +
         '</div>' +
       '</div>' +
+      '<p class="text-center bus-stop-name">' +
+        'Buss Stop ' +
+        stop.name +
+      '</p>' +
     '</section>'
   );
-  showMap();
+  showMap(idx);
 }
 
 //Shows map on single-results page//
-function showMap() {
-  L.mapbox.accessToken = 'pk.eyJ1IjoiY2hpYml0b2Z1IiwiYSI6ImNpaXNkYzAycDAzNHZ2NG01Z3MxcmNjZWEifQ.j0WgZ0YRd36GE4cpJ7DxSQ';
-  var map = new L.mapbox.map('map', 'mapbox.streets')
-    .setView([biteLoc.lat, biteLoc.lng], 16);
-  L.mapbox.featureLayer({
-  // this feature is in the GeoJSON format: see geojson.org
-  // for the full specification
-  type: 'Feature',
-  geometry: {
-      type: 'Point',
-      // coordinates here are in longitude, latitude order because
-      // x, y is the standard for GeoJSON and many formats
-      coordinates: [
-        biteLoc.lng,
-        biteLoc.lat
-      ]
-  },
-  properties: {
-      title: 'Peregrine Espresso',
-      description: '1718 14th St NW, Washington, DC',
-      'marker-size': 'large',
-      'marker-color': '#13983c',
-      'marker-symbol': 'restaurant'
-  }
-  }).addTo(map);
+function showMap(idx) {
+  $('.map-remover').removeAttr('id');
+  $('.map-remover').attr('id', 'map');
 
-  L.mapbox.featureLayer({
-  // this feature is in the GeoJSON format: see geojson.org
-  // for the full specification
-  type: 'Feature',
-  geometry: {
-      type: 'Point',
-      // coordinates here are in longitude, latitude order because
-      // x, y is the standard for GeoJSON and many formats
-      coordinates: [
-        busLoc.lng,
-        busLoc.lat
-      ]
-  },
-  properties: {
-      title: 'Peregrine Espresso',
-      description: '1718 14th St NW, Washington, DC',
-      'marker-size': 'large',
-      'marker-color': '#f1e10c',
-      'marker-symbol': 'bus'
-  }
-  }).addTo(map);
+  L.mapbox.accessToken = 'pk.eyJ1IjoiY2hpYml0b2Z1IiwiYSI6ImNpaXNkYzAycDAzNHZ2NG01Z3MxcmNjZWEifQ.j0WgZ0YRd36GE4cpJ7DxSQ';
+
+  window['map' + idx] = L.mapbox.map('map', 'mapbox.streets', {
+    scrollWheelZoom: false,
+    scrollZoom: false
+  }).setView([biteLoc.lat, biteLoc.lng], 16);
+
+  bitePoint = L.mapbox.featureLayer({
+      type: 'Feature',
+      geometry: {
+          type: 'Point',
+          coordinates: [
+            biteLoc.lng,
+            biteLoc.lat
+          ]
+      },
+      properties: {
+          title: 'Peregrine Espresso',
+          description: '1718 14th St NW, Washington, DC',
+          'marker-size': 'large',
+          'marker-color': '#13983c',
+          'marker-symbol': 'restaurant'
+      }
+    });
+
+  busPoint = L.mapbox.featureLayer({
+      type: 'Feature',
+      geometry: {
+          type: 'Point',
+          coordinates: [
+            busLoc.lng,
+            busLoc.lat
+          ]
+      },
+      properties: {
+          title: 'Peregrine Espresso',
+          description: '1718 14th St NW, Washington, DC',
+          'marker-size': 'large',
+          'marker-color': '#f1e10c',
+          'marker-symbol': 'bus'
+      }
+    });
+
+    bitePoint.addTo(window['map' + idx]);
+    busPoint.addTo(window['map' + idx]);
 }
 
 //Back button to show results page//
 function showResults() {
+  busLoc = {};
+  biteLoc = {};
   $('#single-result').hide();
   $('#results').show();
 }
