@@ -1,6 +1,24 @@
+$(document).ready(function() {
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(setPosition);
+    }
+  }
+
+  function setPosition(position) {
+    userLoc = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+  }
+
+  getLocation();
+});
+
 var placesData
 var busLoc = {};
 var biteLoc = {};
+var userLoc = {};
 var bitePoint;
 var busPoint;
 var map;
@@ -47,19 +65,18 @@ function routeList(placesData) {
     var hours = '';
 
     //Generates HTML for hours//
-    for (var k = 0; k < hoursArr.length; k++) {
-      if (JSON.parse(places.hours)) {
-        hours = JSON.parse(places.hours);
-      } else {
-        hours = [NA];
+    if (places.hours != 'None') {
+      hoursArr = JSON.parse(places.hours);
+      for (var k = 0; k < hoursArr.length; k++) {
+        hours +=
+        '<ul>' +
+          '<li>' +
+            hoursArr[k] +
+          '</li>' +
+        '</ul>';
       }
-
-      hours +=
-      '<ul>' +
-        '<li>' +
-          hoursArr[k] +
-        '</li>' +
-      '</ul>';
+    } else {
+      hours = '';
     }
 
     //Creates $$$ for price_level//
@@ -196,57 +213,79 @@ function restaurantDetail(idx, prices, rating, hours) {
 
 //Shows map on single-results page//
 function showMap(idx) {
+  //Gets rid of current map if one exists//
   if (map) {
     map.remove();
   }
-  $('.map-remover').removeAttr('id');
-  $('.map-remover').attr('id', 'map');
 
+  //Map accessToken//
   L.mapbox.accessToken = 'pk.eyJ1IjoiY2hpYml0b2Z1IiwiYSI6ImNpaXNkYzAycDAzNHZ2NG01Z3MxcmNjZWEifQ.j0WgZ0YRd36GE4cpJ7DxSQ';
 
+  //Creates the map//
   map = L.mapbox.map('map', 'mapbox.streets', {
     scrollWheelZoom: false,
     scrollZoom: false
   }).setView([biteLoc.lat, biteLoc.lng], 16);
 
-  bitePoint = L.mapbox.featureLayer({
-      type: 'Feature',
-      geometry: {
-          type: 'Point',
-          coordinates: [
-            biteLoc.lng,
-            biteLoc.lat
+  //User Restaurant and Bus locations//
+  var geojson = [
+    {
+      "type": 'Feature',
+      "geometry": {
+          "type": 'Point',
+          "coordinates": [
+            userLoc.lng,
+            userLoc.lat
           ]
       },
-      properties: {
-          title: 'Peregrine Espresso',
-          description: '1718 14th St NW, Washington, DC',
+      "properties": {
+          "title": 'Peregrine Espresso',
+          "description": '1718 14th St NW, Washington, DC',
           'marker-size': 'large',
-          'marker-color': '#13983c',
-          'marker-symbol': 'restaurant'
+          'marker-color': '#0c91f1',
+          'marker-symbol': 'mobilephone'
       }
-    });
-
-  busPoint = L.mapbox.featureLayer({
-      type: 'Feature',
-      geometry: {
-          type: 'Point',
-          coordinates: [
+    },
+    {
+      "type": 'Feature',
+      "geometry": {
+          "type": 'Point',
+          "coordinates": [
             busLoc.lng,
             busLoc.lat
           ]
       },
-      properties: {
-          title: 'Peregrine Espresso',
-          description: '1718 14th St NW, Washington, DC',
+      "properties": {
+          "title": 'Peregrine Espresso',
+          "description": '1718 14th St NW, Washington, DC',
           'marker-size': 'large',
           'marker-color': '#f1e10c',
           'marker-symbol': 'bus'
       }
-    });
+    },
+    {
+      "type": 'Feature',
+      "geometry": {
+          "type": 'Point',
+          "coordinates": [
+            biteLoc.lng,
+            biteLoc.lat
+          ]
+      },
+      "properties": {
+          "title": 'Peregrine Espresso',
+          "description": '1718 14th St NW, Washington, DC',
+          'marker-size': 'large',
+          'marker-color': '#13983c',
+          'marker-symbol': 'restaurant'
+      }
+    }
+  ];
 
-    bitePoint.addTo(map);
-    busPoint.addTo(map);
+    var Poi = L.mapbox.featureLayer().setGeoJSON(geojson);
+
+    Poi.addTo(map);
+    map.fitBounds(Poi.getBounds());
 }
 
 //Back button to show results page//
