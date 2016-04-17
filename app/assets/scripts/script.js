@@ -218,69 +218,74 @@ function showMap(idx) {
     map.remove();
   }
 
+  //Map accessToken//
   L.mapbox.accessToken = 'pk.eyJ1IjoiY2hpYml0b2Z1IiwiYSI6ImNpaXNkYzAycDAzNHZ2NG01Z3MxcmNjZWEifQ.j0WgZ0YRd36GE4cpJ7DxSQ';
 
+  //Creates the map//
   map = L.mapbox.map('map', 'mapbox.streets', {
     scrollWheelZoom: false,
     scrollZoom: false
   }).setView([biteLoc.lat, biteLoc.lng], 16);
 
-  bitePoint = L.mapbox.featureLayer({
-      type: 'Feature',
-      geometry: {
-          type: 'Point',
-          coordinates: [
-            biteLoc.lng,
-            biteLoc.lat
+  //User Restaurant and Bus locations//
+  var geojson = [
+    {
+      "type": 'Feature',
+      "geometry": {
+          "type": 'Point',
+          "coordinates": [
+            userLoc.lng,
+            userLoc.lat
           ]
       },
-      properties: {
-          title: 'Peregrine Espresso',
-          description: '1718 14th St NW, Washington, DC',
+      "properties": {
+          "title": 'Peregrine Espresso',
+          "description": '1718 14th St NW, Washington, DC',
           'marker-size': 'large',
-          'marker-color': '#13983c',
-          'marker-symbol': 'restaurant'
+          'marker-color': '#0c91f1',
+          'marker-symbol': 'mobilephone'
       }
-    });
-
-  busPoint = L.mapbox.featureLayer({
-      type: 'Feature',
-      geometry: {
-          type: 'Point',
-          coordinates: [
+    },
+    {
+      "type": 'Feature',
+      "geometry": {
+          "type": 'Point',
+          "coordinates": [
             busLoc.lng,
             busLoc.lat
           ]
       },
-      properties: {
-          title: 'Peregrine Espresso',
-          description: '1718 14th St NW, Washington, DC',
+      "properties": {
+          "title": 'Peregrine Espresso',
+          "description": '1718 14th St NW, Washington, DC',
           'marker-size': 'large',
           'marker-color': '#f1e10c',
           'marker-symbol': 'bus'
       }
-    });
+    },
+    {
+      "type": 'Feature',
+      "geometry": {
+          "type": 'Point',
+          "coordinates": [
+            biteLoc.lng,
+            biteLoc.lat
+          ]
+      },
+      "properties": {
+          "title": 'Peregrine Espresso',
+          "description": '1718 14th St NW, Washington, DC',
+          'marker-size': 'large',
+          'marker-color': '#13983c',
+          'marker-symbol': 'restaurant'
+      }
+    }
+  ];
 
-    userPoint = L.mapbox.featureLayer({
-        type: 'Feature',
-        geometry: {
-            type: 'Point',
-            coordinates: [
-              userLoc.lng,
-              userLoc.lat
-            ]
-        },
-        properties: {
-            title: 'Peregrine Espresso',
-            description: '1718 14th St NW, Washington, DC',
-            'marker-size': 'large',
-            'marker-color': '#0c91f1',
-            'marker-symbol': 'mobilephone'
-        }
-      });
-    busPoint.addTo(map);
-    bitePoint.addTo(map);
-    userPoint.addTo(map);
+    var Poi = L.mapbox.featureLayer().setGeoJSON(geojson);
+
+    Poi.addTo(map);
+    map.fitBounds(Poi.getBounds());
 }
 
 //Back button to show results page//
