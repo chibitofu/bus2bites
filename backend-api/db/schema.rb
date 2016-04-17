@@ -11,13 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160417011244) do
+ActiveRecord::Schema.define(version: 20160417062849) do
 
-  create_table "route_stops", force: :cascade do |t|
-    t.integer  "route_id"
+  create_table "restaurants", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "lat"
+    t.string   "icon"
+    t.integer  "price_level"
+    t.string   "rating"
+    t.string   "types"
     t.integer  "stop_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "lng"
   end
 
   create_table "routes", force: :cascade do |t|
@@ -28,11 +34,13 @@ ActiveRecord::Schema.define(version: 20160417011244) do
   end
 
   create_table "stops", force: :cascade do |t|
+    t.integer  "route_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.string   "name"
     t.string   "lat"
-    t.string   "lon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "restaurant_id"
+    t.string   "lng"
   end
 
 end
