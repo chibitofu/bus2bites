@@ -1,7 +1,7 @@
 Hungry and riding the bus?   
 Find food that's about a minute walk from bus stops along your route!
 
-![https://github.com/chibitofu/bus2bites/blob/readme-adventures/app_screenshot.png]
+![Screenshot of app homepage](https://github.com/chibitofu/bus2bites/blob/readme-adventures/app_screenshot.png)
 
 # Problem Statement
 
