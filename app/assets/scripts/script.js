@@ -22,6 +22,7 @@ $('#sub-butt').on('click', function(e) {
       $('#route-form').hide()
       placesData = data.data;
       routeList(placesData);
+      console.log(placesData);
     },
     error: function(xhrt, status, error) {
       console.log(status);
@@ -47,6 +48,17 @@ function routeList(placesData) {
   for(var i = 0; i < placesData.length; i++) {
     var idx = 'restaurant';
     var places = placesData[i][idx];
+    var hoursArr = JSON.parse(places.hours);
+    var hours = '';
+    for (var k = 0; k < hoursArr.length; k++) {
+      hours +=
+      '<ul>' +
+        '<li>' +
+          hoursArr[k] +
+        '</li>' +
+      '</ul>';
+    }
+    console.log(hours);
 
     //Creates $$$ for price_level//
     if (places.price_level != null) {
@@ -57,7 +69,7 @@ function routeList(placesData) {
       prices = 'NA';
     }
 
-
+    //Sets rating to NA if null//
     if (places.rating != null) {
       rating = places.rating;
     } else {
@@ -105,7 +117,7 @@ function routeList(placesData) {
               places.address +
             '</p>' +
             '<p class="restaurant-hours">' +
-              places.hours +
+              hours +
             '</p>' +
           '</div>' +
         '</div>' +
@@ -174,14 +186,13 @@ function restaurantDetail(idx, prices, rating) {
       '</div>' +
     '</section>'
   );
-
   showMap();
 }
 
 //Shows map on single-results page//
 function showMap() {
   L.mapbox.accessToken = 'pk.eyJ1IjoiY2hpYml0b2Z1IiwiYSI6ImNpaXNkYzAycDAzNHZ2NG01Z3MxcmNjZWEifQ.j0WgZ0YRd36GE4cpJ7DxSQ';
-  var map = L.mapbox.map('map', 'mapbox.streets')
+  var map = new L.mapbox.map('map', 'mapbox.streets')
     .setView([biteLoc.lat, biteLoc.lng], 16);
   L.mapbox.featureLayer({
   // this feature is in the GeoJSON format: see geojson.org
@@ -232,5 +243,4 @@ function showMap() {
 function showResults() {
   $('#single-result').hide();
   $('#results').show();
-  console.log('hello');
 }
