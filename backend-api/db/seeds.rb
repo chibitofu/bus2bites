@@ -32,7 +32,7 @@
   # stop_name, stop_at, stop_lon
 require 'set'
 
-file = "../../../king_county_bus/"
+file = "../../king_county_bus/"
 
 routes     = File.open("#{file}routes.txt", "r")
 trips      = File.open("#{file}trips.txt", "r")
@@ -50,17 +50,14 @@ routes.each_line do |route_line|
 
   route_id         = route_info[0]
   route_short_name = route_info[2]
+  route_desc = route_info[4]
 
   if route_short_name == route_num
-    route = {
-      id: route_id,
-      short_name: route_short_name,
-      stops: []
-    }
-    # route = Route.create(
-    #   id: route_id,
-    #   short_name: route_short_name
-    # )
+    route = Route.create(
+       id: route_id.to_i,
+       short_name: route_short_name,
+       desc: route_desc 
+    )
   end
 end
 
@@ -69,7 +66,7 @@ trips.each_line do |trip_line|
   trip_route_id     = trip_info[0]
   trip_direction_id = trip_info[5]
 
-  if route[:id] == trip_route_id && trip_direction_id == direction
+  if route.id.to_s == trip_route_id && trip_direction_id == direction
     trip_id = trip_info[2]
     trip_ids.add(trip_id)
   end
@@ -95,21 +92,12 @@ stops.each_line do |stops_line|
       stop_name = stop_line_info[2]
       stop_lat  = stop_line_info[4]
       stop_lon  = stop_line_info[5]
-      route[:stops] << {stop_id: stop_id, stop_name: stop_name, stop_lat: stop_lat, stop_lon: stop_lon}
-      # Route.create(
-      #   id: row[0],
-      #   name: row[1],
-      #   street_address: row[2],
-      #   city: row[3],
-      #   county: row[4],
-      #   state: row[5],
-      #   zip: row[6]
-      # )
+
+      stop = Stop.create(id: stop_id.to_i, name: stop_name, lat: stop_lat, lon: stop_lon)
+      route.stops << stop
     end
   end
 end
-
-puts route[:stops].length
 
 routes.close
 trips.close
