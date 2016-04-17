@@ -59,8 +59,7 @@ routes.each_line do |route_line|
     }
     # route = Route.create(
     #   id: route_id,
-    #   short_name: route_short_name,
-    #   stops: []
+    #   short_name: route_short_name
     # )
   end
 end
