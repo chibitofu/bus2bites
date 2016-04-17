@@ -1,25 +1,22 @@
 class RestaurantsController < ApplicationController
+
   def index
 
     id = params[:id]
     route = Route.find_by(short_name:id.to_s)
     restaurants = route.restaurants
     collect = []
-    counter = 0
 
     restaurants.each do |restaurant| 
-        rest_key = "restaurant" + counter.to_s
-        stop_key = "stop" + counter.to_s
-        rest_info = {"#{rest_key}": restaurant}
-        stop_info = {"#{stop_key}": restaurant.stop}
+        bite_stop_pair = {}
+        bite_stop_pair["restaurant"] = restaurant
+        bite_stop_pair["stop"] = restaurant.stop
 
-        collect << rest_info
-        collect << stop_info
-        
-        counter += 1
+        collect << bite_stop_pair
     end
-
     
-    render json: {data: collect}, status: :ok
+    resp = {data: collect}
+    
+    render json: resp, status: :ok
   end
 end
