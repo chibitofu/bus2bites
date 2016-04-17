@@ -8,13 +8,13 @@ $('#sub-butt').on('click', function(e) {
   var places;
 
   $.ajax({
-    url: 'http://localhost:3000/routes/:id',
+    url: 'http://localhost:3000/routes/' + busRoute,
     method: 'GET',
     data: busRoute,
     success: function(data, status) {
       places = data;
-      console.log(places);
       $('#route-form').hide()
+      console.log(places);
       routeList(places);
     },
     error: function(xhrt, status, error) {
