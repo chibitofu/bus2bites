@@ -39,8 +39,8 @@ Cursory Google searches do not reveal any other apps like this
 
 # Who Dunnit
 
-Brandi Wilson
-Erin Moon
-Loraine Kanervisto
+Brandi Wilson  
+Erin Moon  
+Loraine Kanervisto  
 
 
