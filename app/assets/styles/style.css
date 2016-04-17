@@ -51,6 +51,20 @@ a:visited {
   background-color: rgb(241, 225, 12);
 }
 
+/* Restaurant Listings */
+.restaurants {
+  margin-bottom: 25px;
+}
+
+.restaurant-name {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.restaurant-address {
+  font-size: 18px;
+}
+
 /* Bottom Menu Bar */
 .bottom-bar {
   background-color: rgb(19, 152, 60);

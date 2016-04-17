@@ -21,18 +21,37 @@ $('#sub-butt').on('click', function(e) {
 
 
 function routeList(places) {
-  var items = places.restaurants
-  for(var i = 0; i < items.length; i++) {
+  var item = places.restaurants;
+  console.log(item);
+  for(var i = 0; i < item.length; i++) {
     $('#results').append(
-      '<li class="restaurants">' +
-      '<h3>' +
-      items[i].name +
-      '</h3>' +
-      '<p>' +
-      items[i].image +
-      '</p>' +
-      '</li>'
+      '<section class="restaurants" onclick="restaurantDetail(this)">' +
+        '<div class="row">' +
+          '<p class="restaurant-name">' +
+            item[i].name +
+          '</p>' +
+        '</div>' +
+        '<div class="row">' +
+          '<div class="col-xs-4">' +
+            '<img class="img-responsive restaurant-icon" src="' +
+              item[i].icon +
+            '">' +
+          '</div>' +
+          '<div class="col-xs-8">' +
+            '<p class="restaurant-address">' +
+              item[i].street_address +
+            '</p>' +
+            '<p class="restaurant-hours">' +
+              item[i].hours +
+            '</p>' +
+          '</div>' +
+        '</div>' +
+      '</section>'
     );
   }
 
+}
+
+function restaurantDetail(t) {
+  console.log(t);
 }
