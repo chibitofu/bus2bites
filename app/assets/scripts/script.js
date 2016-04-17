@@ -47,19 +47,18 @@ function routeList(placesData) {
     var hours = '';
 
     //Generates HTML for hours//
-    for (var k = 0; k < hoursArr.length; k++) {
-      if (JSON.parse(places.hours)) {
-        hours = JSON.parse(places.hours);
-      } else {
-        hours = [NA];
+    if (places.hours != 'None') {
+      hoursArr = JSON.parse(places.hours);
+      for (var k = 0; k < hoursArr.length; k++) {
+        hours +=
+        '<ul>' +
+          '<li>' +
+            hoursArr[k] +
+          '</li>' +
+        '</ul>';
       }
-
-      hours +=
-      '<ul>' +
-        '<li>' +
-          hoursArr[k] +
-        '</li>' +
-      '</ul>';
+    } else {
+      hours = '';
     }
 
     //Creates $$$ for price_level//
