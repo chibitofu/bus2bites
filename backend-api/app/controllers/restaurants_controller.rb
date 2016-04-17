@@ -1,5 +1,4 @@
 class RestaurantsController < ApplicationController
-require 'json'
 
   def index
 
@@ -17,7 +16,6 @@ require 'json'
     end
     
     resp = {data: collect}
-    resp = resp.to_json
     
     render json: resp, status: :ok
   end
