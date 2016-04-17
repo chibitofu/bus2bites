@@ -8,8 +8,8 @@ $('#sub-butt').on('click', function(e) {
   var busRoute = parseInt($('.bus-route').val());
 
   $.ajax({
-    url: /route,
-    method: GET,
+    url: 'http://localhost:3000/routes/:id',
+    method: 'GET',
     data: busRoute,
     success: function(data, status) {
       console.log(status);
