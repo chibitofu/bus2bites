@@ -5,6 +5,29 @@ var bitePoint;
 var busPoint;
 var map;
 
+function getDropdownOptions() {
+  $.ajax({
+    url: 'http://localhost:3000/routes/',
+    method: 'GET',
+    success: function(data, status) {
+      for (var i = 0; i < data.length; i++) {
+        $('.bus-route-select').append(
+          '<option value="' +
+          data[i].short_name +
+          '">' +
+          data[i].short_name +
+          '</option>'
+        )
+      }
+      console.log("yay", data);
+    },
+    error: function(xhrt, status, error) {
+      console.log('boooo', status);
+    }
+  });
+};
+getDropdownOptions();
+
 $('#sub-butt').on('click', function(e) {
   e.preventDefault();
   var busRoute = parseInt($('.bus-route').val());
