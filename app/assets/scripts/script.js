@@ -1,3 +1,5 @@
+var item;
+
 $('#sub-butt').on('click', function(e) {
   e.preventDefault();
   var busRoute = parseInt($('.bus-route').val());
@@ -19,22 +21,34 @@ $('#sub-butt').on('click', function(e) {
 
 });
 
-
+//Creates a list of restaurants//
 function routeList(places) {
-  var item = places.restaurants;
+  item = places.restaurants;
+  var prices = '';
   console.log(item);
+
   for(var i = 0; i < item.length; i++) {
+    //Creates $$$ for price_level//
+    for (var j = 0; j < item[i].price_level; j++) {
+      prices += '$';
+    }
+
     $('#results').append(
-      '<section class="restaurants" onclick="restaurantDetail(this)">' +
-        '<div class="row">' +
-          '<p class="restaurant-name">' +
+      '<section class="restaurants" onclick="restaurantDetail(' +
+        i +
+      ')">' +
+        '<div class="row restaurant-name">' +
+          '<p>' +
             item[i].name +
+            '<span>' +
+              prices +
+            '</span>' +
           '</p>' +
         '</div>' +
-        '<div class="row">' +
+        '<div class="row restaurant-bottom">' +
           '<div class="col-xs-4">' +
             '<img class="img-responsive restaurant-icon" src="' +
-              item[i].icon +
+              'http://lorempixel.com/200/200/cats' +
             '">' +
           '</div>' +
           '<div class="col-xs-8">' +
@@ -48,10 +62,11 @@ function routeList(places) {
         '</div>' +
       '</section>'
     );
-  }
+    prices = '';
+  } //end of i for loop//
 
 }
 
-function restaurantDetail(t) {
-  console.log(t);
+function restaurantDetail(elem) {
+  console.log(elem);
 }
