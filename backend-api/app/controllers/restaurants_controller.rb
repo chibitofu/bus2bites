@@ -1,4 +1,6 @@
 class RestaurantsController < ApplicationController
+require 'json'
+
   def index
 
     id = params[:id]
@@ -7,14 +9,16 @@ class RestaurantsController < ApplicationController
     collect = []
 
     restaurants.each do |restaurant| 
-        rest_stop_pair = {}
-        rest_stop_pair["restaurant"] = restaurant
-        rest_stop_pair["stop"] = restaurant.stop
+        bite_stop_pair = {}
+        bite_stop_pair["restaurant"] = restaurant
+        bite_stop_pair["stop"] = restaurant.stop
 
-        collect << rest_stop_pair
+        collect << bite_stop_pair
     end
-
     
-    render json: {data: collect}, status: :ok
+    resp = {data: collect}
+    resp = resp.to_json
+    
+    render json: resp, status: :ok
   end
 end
