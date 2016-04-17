@@ -5,18 +5,13 @@ class RestaurantsController < ApplicationController
     route = Route.find_by(short_name:id.to_s)
     restaurants = route.restaurants
     collect = []
-    counter = 0
 
     restaurants.each do |restaurant| 
-        rest_key = "restaurant" + counter.to_s
-        stop_key = "stop" + counter.to_s
-        rest_info = {"#{rest_key}": restaurant}
-        stop_info = {"#{stop_key}": restaurant.stop}
+        rest_stop_pair = {}
+        rest_stop_pair["restaurant"] = restaurant
+        rest_stop_pair["stop"] = restaurant.stop
 
-        collect << rest_info
-        collect << stop_info
-        
-        counter += 1
+        collect << rest_stop_pair
     end
 
     
