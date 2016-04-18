@@ -1,10 +1,12 @@
 $(document).ready(function() {
+  //Gets geolocation of user//
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(setPosition);
     }
   }
 
+  //Sets geolocation to userLoc variable//
   function setPosition(position) {
     userLoc = {
       lat: position.coords.latitude,
@@ -230,13 +232,13 @@ function restaurantDetail(idx, prices, rating, hours) {
 
 function getRevGeo(idx) {
   var latlng = new google.maps.LatLng(userLoc.lat, userLoc.lng);
-    // This is making the Geocode request
+    //This is making the Geocode request//
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'latLng': latlng }, function (results, status) {
         if (status !== google.maps.GeocoderStatus.OK) {
             alert(status);
         }
-        // This is checking to see if the Geoeode Status is OK before proceeding
+        //This is checking to see if the Geoeode Status is OK before proceeding//
         if (status == google.maps.GeocoderStatus.OK) {
             address = results[1].formatted_address;
             showMap(idx);
