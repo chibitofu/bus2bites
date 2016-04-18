@@ -197,3 +197,14 @@ a:visited {
   font-size: 8px;
   color: rgba(255, 255, 255, 0.8);
 }
+
+.google-logo {
+  margin-left: 3px;
+  border-radius: 5px;
+  padding: 0 4px 2px;
+  background-color: rgb(255, 255, 255);
+}
+
+.google-logo img {
+  width: 90px;
+}

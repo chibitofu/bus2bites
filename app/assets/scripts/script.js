@@ -1,10 +1,12 @@
 $(document).ready(function() {
+  //Gets geolocation of user//
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(setPosition);
     }
   }
 
+  //Sets geolocation to userLoc variable//
   function setPosition(position) {
     userLoc = {
       lat: position.coords.latitude,
@@ -24,6 +26,7 @@ var biteLoc = {};
 var bitePoint;
 var busPoint;
 var map;
+var address;
 
 $('#sub-butt').on('click', function(e) {
   e.preventDefault();
@@ -223,13 +226,29 @@ function restaurantDetail(idx, prices, rating, hours) {
       '</p>' +
     '</section>'
   );
+  getRevGeo(idx);
 
-  showMap(idx);
+}
 
+function getRevGeo(idx) {
+  var latlng = new google.maps.LatLng(userLoc.lat, userLoc.lng);
+    //This is making the Geocode request//
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+        if (status !== google.maps.GeocoderStatus.OK) {
+            alert(status);
+        }
+        //This is checking to see if the Geoeode Status is OK before proceeding//
+        if (status == google.maps.GeocoderStatus.OK) {
+            address = results[1].formatted_address;
+            showMap(idx);
+        }
+    });
 }
 
 //Shows map on single-results page//
 function showMap(idx) {
+  var places = placesData[idx];
 
   //Gets rid of current map if one exists//
   if (map) {
@@ -257,8 +276,8 @@ function showMap(idx) {
           ]
       },
       "properties": {
-          "title": 'Peregrine Espresso',
-          "description": '1718 14th St NW, Washington, DC',
+          "title": 'Current Location',
+          "description": address,
           'marker-size': 'large',
           'marker-color': '#0c91f1',
           'marker-symbol': 'mobilephone'
@@ -274,8 +293,8 @@ function showMap(idx) {
           ]
       },
       "properties": {
-          "title": 'Peregrine Espresso',
-          "description": '1718 14th St NW, Washington, DC',
+          "title": 'Bus Stop',
+          "description": places.stop.name,
           'marker-size': 'large',
           'marker-color': '#f1e10c',
           'marker-symbol': 'bus'
@@ -291,8 +310,8 @@ function showMap(idx) {
           ]
       },
       "properties": {
-          "title": 'Peregrine Espresso',
-          "description": '1718 14th St NW, Washington, DC',
+          "title": places.restaurant.name,
+          "description": places.restaurant.address,
           'marker-size': 'large',
           'marker-color': '#13983c',
           'marker-symbol': 'restaurant'
